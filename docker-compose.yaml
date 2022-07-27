@@ -1,0 +1,35 @@
+services:
+  app:
+    image: nikolaik/python-nodejs:python3.10-nodejs16-alpine
+    volumes:
+      - .:/app
+    working_dir: /app
+    ports:
+      - 3000:3000
+    environment:
+      - POSTGRES_HOST=image-data-in-api-postgres-1
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+    command:
+      - /bin/sh
+      - -c
+      - |
+        apk add --update --no-cache \
+          make \
+          g++ \
+          jpeg-dev \
+          cairo-dev \
+          giflib-dev \
+          pango-dev \
+          libtool \
+          autoconf \
+          automake
+        npm i
+        node index
+
+  # postgres:
+  #   image: postgres:14-alpine
+  #   ports:
+  #     - 5432:5432
+  #   environment:
+  #     POSTGRES_PASSWORD: password
